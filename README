@@ -1,0 +1,3 @@
+C++ program which forks off a Python script and then sends it a few things via a pipe.
+
+To try it out, run 'make test'.

@@ -1,0 +1,19 @@
+#!/usr/bin/python
+
+import sys
+import os
+import struct
+
+def main():
+   fd_read = int(sys.argv[1])
+   while True:
+      msg = os.read(fd_read, 4)
+      if not msg:
+         break
+      msg = os.read(fd_read, struct.unpack("I", msg)[0])
+      if not msg:
+         break
+      print('>>> Received: %r' % msg)
+
+if __name__ == '__main__':
+   main()
