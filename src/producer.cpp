@@ -89,7 +89,7 @@ namespace consumer
       }
    };
 
-   static auto send(std::string message) -> void
+   static void send(std::string message)
    {
       // on first call to this method, the consumer is launched
       static Consumer client;
@@ -125,4 +125,3 @@ auto main(int argc, char *argv[]) -> int
       return 3;
    }
 }
-
