@@ -19,22 +19,22 @@ namespace consumer
          static const int READ  = 0;
          static const int WRITE = 1;
 
-			// stores the read and write file descriptors for a pipe
+         // stores the read and write file descriptors for a pipe
          int fd[2] = {0};
 
-			// attempt to create a pipe...
+         // attempt to create a pipe...
          if(pipe(fd) == -1)
          {
-         	// ...and inform the caller if it was unsuccessful
+            // ...and inform the caller if it was unsuccessful
             throw pipe_creation_failed();
          }
 
          pid_t pid(fork());
 
-			// forked child process see pid as zero
+         // forked child process see pid as zero
          if(pid == 0)
          {
-         	// the consumer doesn't need to write to the pipe
+            // the consumer doesn't need to write to the pipe
             close(fd[WRITE]);
 
             // launch the application 'consumer' in the current working directory and pass it the pipe file descriptor for the 'read' end
@@ -44,20 +44,20 @@ namespace consumer
             throw consumer_launch_failed();
          }
 
-			// the producer doesn't need to read from the pipe
+         // the producer doesn't need to read from the pipe
          close(fd[READ]);
 
-			// fork failed
+         // fork failed
          if(pid < 0)
          {
-         	// nobody to write to
+            // nobody to write to
             close(fd[WRITE]);
 
-				// notify the caller            
+            // notify the caller            
             throw fork_failed();
          }
 
-			// the send() function needs this for writing and the destructor closes this upon program termination
+         // the send() function needs this for writing and the destructor closes this upon program termination
          fd_write = fd[1];
       }
 
@@ -112,12 +112,12 @@ auto main(int argc, char *argv[]) -> int
    catch(consumer::pipe_creation_failed const &)
    {
       std::cout << "[ERROR] Failed to create the pipe" << std::endl;
-     	return 1;
+      return 1;
    }
    catch(consumer::fork_failed const &)
    {
-   	std::cout << "[ERROR] Failed to fork" << std::endl;
-   	return 2;
+      std::cout << "[ERROR] Failed to fork" << std::endl;
+      return 2;
    }
    catch(consumer::consumer_launch_failed const &)
    {
